@@ -1,0 +1,13 @@
+# Documentation
+implemetation.md
+
+# Node modules and package files in subdirectories
+uniclass-backend/node_modules/
+uniclass-backend/.env
+uniclass-backend/package-lock.json
+uniclass-backend/yarn.lock
+uniclass-backend/pnpm-lock.yaml
+
+# Build outputs
+uniclass-backend/dist/
+uniclass-backend/build/
