@@ -9,19 +9,24 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(googleId: string, email: string, name: string, photo?: string, googleAccessToken?: string) {
-    const user = await this.usersService.findOrCreate(googleId, email, name, photo, googleAccessToken);
-    return user;
-  }
+  async googleLogin(profile: any) {
+    const user = await this.usersService.findOrCreate(
+      profile.googleId,
+      profile.email,
+      profile.name,
+      profile.photo,
+      profile.accessToken // keep this for Google Classroom access
+    );
 
-  async generateJwt(user: any) {
-    const payload = { 
-      sub: user.id, 
-      email: user.email, 
-      role: user.role 
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
     };
+
     return {
       access_token: this.jwtService.sign(payload),
+      user,
     };
   }
 }

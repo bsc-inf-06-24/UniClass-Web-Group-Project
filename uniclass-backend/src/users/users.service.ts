@@ -11,15 +11,29 @@ export class UsersService {
   ) {}
 
   async findById(id: number): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { id } });
+    return this.usersRepository.findOne({
+      where: { id },
+    });
   }
 
-  async findByGoogleId(googleId: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { googleId } });
+  async findByGoogleId(
+    googleId: string,
+  ): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { googleId },
+    });
   }
 
-  async findOrCreate(googleId: string, email: string, name: string, photo?: string, googleAccessToken?: string): Promise<User> {
-    const existing = await this.findByGoogleId(googleId);
+  async findOrCreate(
+    googleId: string,
+    email: string,
+    name: string,
+    photo?: string,
+    googleAccessToken?: string,
+  ): Promise<User> {
+    const existing = await this.findByGoogleId(
+      googleId,
+    );
 
     if (!existing) {
       const user = this.usersRepository.create({
@@ -29,13 +43,18 @@ export class UsersService {
         photo,
         googleAccessToken,
       });
+
       await this.usersRepository.save(user);
       return user;
     }
 
     if (googleAccessToken) {
-      existing.googleAccessToken = googleAccessToken;
-      await this.usersRepository.save(existing);
+      existing.googleAccessToken =
+        googleAccessToken;
+
+      await this.usersRepository.save(
+        existing,
+      );
     }
 
     return existing;

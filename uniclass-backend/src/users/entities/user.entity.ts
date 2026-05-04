@@ -1,11 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn
+} from 'typeorm';
 
 @Entity('UC_USERS')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   googleId: string;
 
   @Column()
@@ -26,5 +31,5 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  // Relations will be added after Joshua & Mirriam define their entities
+  // relations can be added later
 }

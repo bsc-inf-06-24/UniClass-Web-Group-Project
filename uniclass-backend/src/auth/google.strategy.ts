@@ -1,34 +1,45 @@
-import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import {
+  Strategy,
+  VerifyCallback,
+  StrategyOptions,
+} from 'passport-google-oauth20';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(
+  Strategy,
+  'google',
+) {
   constructor() {
-    super({
-      clientID: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL!,
+    super(<StrategyOptions>{
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+
       scope: [
-        'profile',
         'email',
+        'profile',
         'https://www.googleapis.com/auth/classroom.courses.readonly',
         'https://www.googleapis.com/auth/classroom.rosters.readonly',
       ],
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) {
-    const { id, name, emails, photos } = profile;
-    
-    const user = {
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback,
+  ) {
+    const { id, emails, displayName, photos } = profile;
+
+    done(null, {
       googleId: id,
       email: emails[0].value,
-      name: name.givenName + ' ' + name.familyName,
+      name: displayName,
       photo: photos[0].value,
       accessToken,
-    };
-
-    done(null, user);
+    });
   }
 }
