@@ -9,7 +9,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       callbackURL: process.env.GOOGLE_CALLBACK_URL!,
-      scope: ['profile', 'email'],
+      scope: [
+        'profile',
+        'email',
+        'https://www.googleapis.com/auth/classroom.courses.readonly',
+        'https://www.googleapis.com/auth/classroom.rosters.readonly',
+      ],
     });
   }
 
@@ -21,8 +26,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       email: emails[0].value,
       name: name.givenName + ' ' + name.familyName,
       photo: photos[0].value,
+      accessToken,
     };
-    
+
     done(null, user);
   }
 }

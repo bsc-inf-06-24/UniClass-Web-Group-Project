@@ -18,19 +18,26 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { googleId } });
   }
 
-  async findOrCreate(googleId: string, email: string, name: string, photo?: string): Promise<User> {
-    let user = await this.findByGoogleId(googleId);
-    
-    if (!user) {
-      user = this.usersRepository.create({
+  async findOrCreate(googleId: string, email: string, name: string, photo?: string, googleAccessToken?: string): Promise<User> {
+    const existing = await this.findByGoogleId(googleId);
+
+    if (!existing) {
+      const user = this.usersRepository.create({
         googleId,
         email,
         name,
         photo,
+        googleAccessToken,
       });
       await this.usersRepository.save(user);
+      return user;
     }
-    
-    return user;
+
+    if (googleAccessToken) {
+      existing.googleAccessToken = googleAccessToken;
+      await this.usersRepository.save(existing);
+    }
+
+    return existing;
   }
 }

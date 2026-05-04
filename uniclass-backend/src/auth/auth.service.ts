@@ -9,8 +9,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(googleId: string, email: string, name: string, photo?: string) {
-    const user = await this.usersService.findOrCreate(googleId, email, name, photo);
+  async validateUser(googleId: string, email: string, name: string, photo?: string, googleAccessToken?: string) {
+    const user = await this.usersService.findOrCreate(googleId, email, name, photo, googleAccessToken);
     return user;
   }
 

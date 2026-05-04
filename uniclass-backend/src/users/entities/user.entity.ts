@@ -20,6 +20,9 @@ export class User {
   @Column({ default: 'student' })
   role: 'lecturer' | 'student';
 
+  @Column({ nullable: true })
+  googleAccessToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

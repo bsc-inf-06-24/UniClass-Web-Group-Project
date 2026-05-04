@@ -17,9 +17,9 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleAuthCallback(@Req() req, @Res() res: Response) {
-    const { googleId, email, name, photo } = req.user;
-    
-    const user = await this.authService.validateUser(googleId, email, name, photo);
+    const { googleId, email, name, photo, accessToken } = req.user;
+
+    const user = await this.authService.validateUser(googleId, email, name, photo, accessToken);
     const jwt = await this.authService.generateJwt(user);
     
     // Redirect to frontend with JWT token
