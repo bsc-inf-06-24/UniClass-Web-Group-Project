@@ -22,6 +22,7 @@ synchronize: true,
 }),
 UsersModule,
 AuthModule,
+GroupsModule,
 ],
 })
 export class AppModule {}
