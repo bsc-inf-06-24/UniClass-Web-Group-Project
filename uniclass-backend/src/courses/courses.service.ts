@@ -18,6 +18,7 @@ export class CoursesService {
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
   const lecturer = await this.usersService.findById(lecturerId);
+  if (!lecturer) throw new NotFoundException('Lecturer not found');
   const course = this.repo.create({
     classroomCourseId: dto.classroomCourseId,
     name: data.name,
