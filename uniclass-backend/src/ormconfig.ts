@@ -10,7 +10,7 @@ export default new DataSource({
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
-    sid: process.env.DB_SID,
+    serviceName: process.env.DB_SERVICE_NAME,
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
 });
