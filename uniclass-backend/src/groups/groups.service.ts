@@ -21,10 +21,9 @@ export class GroupsService {
     }
     return array;
   }
-  async generate(courseId: number, dto: GenerateGroupsDto, accessToken: string) {
+  async generate(courseId: number, dto: GenerateGroupsDto) {
     const course = await this.coursesService.findOne(courseId);
-    const { students } = await this.coursesService.syncStudents(courseId,
-    accessToken);
+    const { students } = await this.coursesService.syncStudents(courseId);
     const shuffled = this.shuffle([...students]);
     const size = dto.groupSize || Math.ceil(shuffled.length / (dto.groupCount || 
 1));
@@ -33,7 +32,11 @@ export class GroupsService {
       chunks.push(shuffled.slice(i, i + size));
     }
     // Delete old unpublished groups first
-    await this.repo.delete({ course: { id: courseId }, published: false });
+    await this.repo
+      .createQueryBuilder()
+      .delete()
+      .where('course_id = :courseId AND published = 0', { courseId })
+      .execute();
     const groups = chunks.map((members, i) =>
       this.repo.create({ name: `Group ${i + 1}`, course, members, published: false })
     );
@@ -51,14 +54,13 @@ export class GroupsService {
     const groups = await this.findAllForCourse(courseId);
     groups.forEach(g => { g.published = true; });
     return this.repo.save(groups);
-    // TODO: after Jaramiah is done, call notificationsService here
   }
   async moveStudent(groupId: number, dto: MoveStudentDto) {
     const source = await this.findOne(groupId);
     const target = await this.findOne(dto.targetGroupId);
-    const student = await this.usersService.findById(dto.studentId);
+    const student = await this.usersService.findByRegNumber(dto.studentRegNumber);
     if (!student) throw new NotFoundException('Student not found');
-    source.members = source.members.filter(m => m.id !== dto.studentId);
+    source.members = source.members.filter(m => m.regNumber !== dto.studentRegNumber);
     target.members.push(student);
     await this.repo.save(source);
     await this.repo.save(target);

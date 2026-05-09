@@ -1,5 +1,5 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 export class MoveStudentDto {
-  @IsNumber() studentId: number;
+  @IsString() studentRegNumber: string;
   @IsNumber() targetGroupId: number;
 }

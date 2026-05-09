@@ -1,22 +1,19 @@
-import { Controller, Get, Post, Delete, Param, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { LinkCourseDto } from './dto/link-course.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller('api/v1/courses')
 export class CoursesController {
   constructor(private coursesService: CoursesService) {}
 
   @Get()
-  findAll(@Req() req) {
-    return this.coursesService.findAllByLecturer(req.user.id);
+  findAll() {
+    return this.coursesService.findAll();
   }
 
   @Post()
-  link(@Body() dto: LinkCourseDto, @Req() req) {
-    const token = req.headers.authorization.split(' ')[1];
-    return this.coursesService.linkCourse(req.user.id, dto, token);
+  link(@Body() dto: LinkCourseDto) {
+    return this.coursesService.linkCourse(dto);
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -29,15 +26,13 @@ export class CoursesController {
   }
 
   @Post(':id/sync')
-  sync(@Param('id') id: string, @Req() req) {
-    const token = req.headers.authorization.split(' ')[1];
-    return this.coursesService.syncStudents(+id, token);
+  sync(@Param('id') id: string) {
+    return this.coursesService.syncStudents(+id);
   }
 
   @Get(':id/students')
-  getStudents(@Param('id') id: string, @Req() req) {
-    const token = req.headers.authorization.split(' ')[1];
-    return this.coursesService.syncStudents(+id, token);
+  getStudents(@Param('id') id: string) {
+    return this.coursesService.syncStudents(+id);
   }
 
 }

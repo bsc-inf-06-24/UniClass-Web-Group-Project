@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle('UniClass API')
     .setDescription('The UniClass API documentation')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory);

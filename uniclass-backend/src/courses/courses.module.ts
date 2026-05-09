@@ -9,7 +9,7 @@ import { UsersModule } from '../users/users.module';
   imports: [TypeOrmModule.forFeature([Course]), UsersModule],
   providers: [CoursesService],
   controllers: [CoursesController],
-  exports: [CoursesService], // <-- Mirriam needs this
+  exports: [CoursesService], 
   })
   
 export class CoursesModule {}

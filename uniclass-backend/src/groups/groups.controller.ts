@@ -1,17 +1,14 @@
-import { Controller, Get, Post, Patch, Param, Body, Req, UseGuards } from 
-'@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { GenerateGroupsDto } from './dto/generate-groups.dto';
 import { MoveStudentDto } from './dto/move-student.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-@UseGuards(JwtAuthGuard)
+
 @Controller('api/v1')
 export class GroupsController {
   constructor(private groupsService: GroupsService) {}
   @Post('courses/:id/groups/generate')
-  generate(@Param('id') id: string, @Body() dto: GenerateGroupsDto, @Req() req) {
-    const token = req.headers.authorization.split(' ')[1];
-    return this.groupsService.generate(+id, dto, token);
+  generate(@Param('id') id: string, @Body() dto: GenerateGroupsDto) {
+    return this.groupsService.generate(+id, dto);
   }
   @Get('courses/:id/groups')
   findAll(@Param('id') id: string) {

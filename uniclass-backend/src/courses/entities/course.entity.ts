@@ -1,27 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, CreateDateColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('UC_COURSES')
 export class Course {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  classroomCourseId: string;
+  courseCode!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
-  section: string;
+  section?: string;
 
-  @ManyToOne(() => User)
-  lecturer: User;
+  @Column({ type: 'number', nullable: true })
+  credits?: number;
+
+  @Column({ default: 'Regular Course' })
+  courseType!: string;
 
   @ManyToMany(() => User)
   @JoinTable({ name: 'UC_COURSE_STUDENTS' })
-  students: User[];
+  students!: User[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

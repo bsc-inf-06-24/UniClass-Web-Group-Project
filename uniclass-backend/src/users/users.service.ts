@@ -16,6 +16,19 @@ export class UsersService {
     });
   }
 
+  async findByRegNumber(regNumber: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { regNumber },
+    });
+  }
+
+  async findAllStudents(): Promise<User[]> {
+    return this.usersRepository.find({
+      where: { role: 'student' },
+      order: { regNumber: 'ASC' },
+    });
+  }
+
   async findByGoogleId(
     googleId: string,
   ): Promise<User | null> {
@@ -41,6 +54,7 @@ export class UsersService {
         email,
         name,
         photo,
+        regNumber: googleId,
         googleAccessToken,
       });
 

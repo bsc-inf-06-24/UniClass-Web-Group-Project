@@ -9,6 +9,6 @@ import { UsersModule } from '../users/users.module';
   imports: [TypeOrmModule.forFeature([Group]), CoursesModule, UsersModule],
   providers: [GroupsService],
   controllers: [GroupsController],
-  exports: [GroupsService],  // <-- Jaramiah needs this
+  exports: [GroupsService],  
 })
 export class GroupsModule {}

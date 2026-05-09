@@ -8,28 +8,33 @@ import {
 @Entity('UC_USERS')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
+
+  @Column({ unique: true, nullable: true })
+  googleId?: string;
 
   @Column({ unique: true })
-  googleId: string;
+  regNumber!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
-  photo: string;
+  cohort?: string;
+
+  @Column({ nullable: true })
+  photo!: string;
 
   @Column({ default: 'student' })
-  role: 'lecturer' | 'student';
+  role!: 'lecturer' | 'student';
 
-  @Column({ nullable: true })
-  googleAccessToken: string;
+  @Column({ type: 'varchar2', length: 1000, nullable: true })
+  googleAccessToken?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
-  // relations can be added later
 }
