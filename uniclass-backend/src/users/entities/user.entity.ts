@@ -16,8 +16,8 @@ export class User {
   @Column({ unique: true })
   regNumber!: string;
 
-  @Column()
-  email!: string;
+  @Column({ nullable: true })
+  email?: string;
 
   @Column()
   name!: string;
